@@ -6,7 +6,7 @@
 
 #region Load Intune functions from intune-powershell-graph.ps1
 
-. .\intune-powershell-graph\intune-powershell-graph.ps1
+. .\intune-graph-functions.ps1
 
 #endregion
 
@@ -97,8 +97,16 @@ $Applications = Get-IntuneApplication
 foreach ($Application in $Applications){
 
 	$Assign = Add-ApplicationAssignment -ApplicationId $Application.id -TargetGroupId $TargetGroupId -InstallIntent "available"
-	Write-Host "Successfully assigned '$AADGroup' to $($Application.displayName)/$($Application.id) with" $Assign.InstallIntent "installation action"
+	Write-Host "Successfully assigned '$AADGroup' to $($Application.displayName)/$($Application.id) with" $Application.InstallIntent "installation action"
 
 	Write-Host
 
 }
+
+#endregion
+
+####################################################
+
+# Clear out the authToken so you don't accidentally run it against the wrong tenant
+
+Clear-Variable -Name "authToken" -Scope global
